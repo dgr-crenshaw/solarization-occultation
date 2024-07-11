@@ -6,6 +6,9 @@
 #include <PubSubClient.h>
 
 #include <wifiConfig.h>
+char ssid[] = SECRET_SSID
+char pass[] = SECRET_PASS
+
 //#include <wifiConfigRaspberryPi.h>
 
 /*
