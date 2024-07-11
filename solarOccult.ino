@@ -88,29 +88,29 @@ readBatteryatA0 batteryTest; //instantiate readBatteryatA0
  * https://chewett.co.uk/blog/1066/pin-numbering-for-wemos-d1-mini-esp8266/
  ***********************************************************/
 
-/**********hives WEMOS**********/
-//DHT dht_01(14, DHT22); //channel 01 WEMOS board see pin mapping above
-//DHT dht_02(12, DHT22); //channel 02 WEMOS board see pin mapping above
-//DHT dht_03(13, DHT22); //channel 03 WEMOS board see pin mapping above
-/**********hives WEMOS**********/
+/**********sensors WEMOS**********/
+DHT dht_01(14, DHT22); //channel 01 WEMOS board see pin mapping above
+DHT dht_02(12, DHT22); //channel 02 WEMOS board see pin mapping above
+DHT dht_03(13, DHT22); //channel 03 WEMOS board see pin mapping above
+/**********sensors WEMOS**********/
 
-/**********hives HUZZAH**********/
+/**********sensors HUZZAH**********/
 DHT dht_01(4, DHT22); //channel 01 HUZZAH board
 DHT dht_02(2, DHT22); //channel 02 HUZZAH board
 //DHT dht_03(7, DHT22); //channel  HUZZAH board
-/**********hives HUZZAH**********/
+/**********sensors HUZZAH**********/
 
 /************************************************
 define feeds
 ************************************************/
-#define publishTopicHiveNumber "feedsHive0x/hiveNumber"
-#define publishTopicBatteryFeed "feedsHive0x/batteryRead"
-#define publishTopicTemperatureDHT1 "feedsHive0x/temperatureDHT1"
-#define publishTopicHumidityDHT1 "feedsHive0x/humidityDHT1"
-#define publishTopictemperatureDHT2 "feedsHive0x/temperatureDHT2"
-#define publishTopicHumidityDHT2 "feedsHive0x/humidityDHT2"
-#define publishTopicTemperatureDHT3 "feedsHive0x/temperatureDHT3"
-#define publishTopicHumidityDHT3 "feedsHive0x/humidityDHT3"
+#define publishTopicSensorNumber "feedSensor0x/SensorNumber"
+#define publishTopicBatteryFeed "feedSensor0x/batteryRead"
+#define publishTopicTemperatureDHT1 "feedSensor0x/temperatureDHT1"
+#define publishTopicHumidityDHT1 "feedSensor0x/humidityDHT1"
+#define publishTopictemperatureDHT2 "feedSensor0x/temperatureDHT2"
+#define publishTopicHumidityDHT2 "feedSensor0x/humidityDHT2"
+#define publishTopicTemperatureDHT3 "feedSensor0x/temperatureDHT3"
+#define publishTopicHumidityDHT3 "feedSensor0x/humidityDHT3"
 
 WiFiClient wifiClient;
 PubSubClient mqttClient;
@@ -152,7 +152,7 @@ void setup() {
 //  dtostrf(dht_03.readTemperature(true), 7, 3, temperatureDHT03);
 //  dtostrf(dht_03.readHumidity(), 7, 3, humidityDHT03);
 
-  mqttClient.publish(publishTopicHiveNumber, "Hive0x", true);
+  mqttClient.publish(publishTopicSensorNumber, "Sensor0x", true);
   mqttClient.publish(publishTopicBatteryFeed, voltageAsString, true);
   mqttClient.publish(publishTopicTemperatureDHT1, temperatureDHT01, true);
   mqttClient.publish(publishTopicHumidityDHT1, humidityDHT01, true);
@@ -166,22 +166,22 @@ void setup() {
  //Serial.println("******************************");
  //Serial.println();
  //Serial.println("**********publishing**********");
- //Serial.print("VOLTAGE HIVE_01: ");
+ //Serial.print("VOLTAGE SENSOR_01: ");
  //Serial.println(showCalculatedVoltage);
  //Serial.println();
- //Serial.print("TEMPERATURE 01 HIVE_01: ");
+ //Serial.print("TEMPERATURE 01 SENSOR_01: ");
  //Serial.println(dht_01.readTemperature(true));
- //Serial.print("HUMIDITY 01 HIVE_01: ");
+ //Serial.print("HUMIDITY 01 SENSOR_01: ");
  //Serial.println(dht_01.readHumidity());
  //Serial.println();
- //Serial.print("TEMPERATURE 02 HIVE_01: ");
+ //Serial.print("TEMPERATURE 02 SENSOR_01: ");
  //Serial.println(dht_02.readTemperature(true));
- //Serial.print("HUMIDITY 02 HIVE_01: ");
+ //Serial.print("HUMIDITY 02 SENSOR_01: ");
  //Serial.println(dht_02.readHumidity());
  //Serial.println();
- //Serial.print("TEMPERATURE 03 HIVE_01: ");
+ //Serial.print("TEMPERATURE 03 SENSOR_01: ");
  //Serial.println(dht_03.readTemperature(true));
- //Serial.print("HUMIDITY 03 HIVE_01: ");
+ //Serial.print("HUMIDITY 03 SENSOR_01: ");
  //Serial.println(dht_03.readHumidity());
  //Serial.println("******************************");
  //Serial.println();
@@ -230,7 +230,7 @@ void reconnect() {
   while (!mqttClient.connected()) {
    //Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (mqttClient.connect("cyberHive00", mqtt_user, mqtt_password)) {
+    if (mqttClient.connect("solarOccult00", mqtt_user, mqtt_password)) {
      //Serial.println("connected");
     } else {
      //Serial.print("failed, rc=");
