@@ -1,3 +1,9 @@
+/*
+Make this for the weed eradication solarization/occultation experiment.
+One sensor reads temperature and humidity from clear poly cover
+Other sensor reads temperature and humidity from black poly cover
+*/
+
 #include <ESP8266WiFi.h>
 
 #include <DHT.h>
@@ -9,31 +15,24 @@
 char wifi_ssid = SECRET_SSID
 char wifi_password = SECRET_PASS
 
-//#include <wifiConfigRaspberryPi.h>
-
-/*
-Make this for the weed eradication solarization/occultation experiment.
-One sensor reads temperature and humidity from clear poly cover
-Other sensor reads temperature and humidity from black poly cover
-*/
-
 /************************* WiFi Access Point *********************************
-  converted these to libraries so code calculateDividedVoltagecan be uploaded to github
-  without privacy compromise
+  Convert these to libraries so code be uploaded to github without privacy compromise
 
-#define WLAN_SSID       "get from wifiConfig.h"
-#define WLAN_PASS       "get from wifiConfig.h"
+        #define SECRET_SSID "ssidFoo"
+        #define SECRET_PASS "passwordBar"
+
 ******************************************************************************/
+
+//#include <wifiConfigRaspberryPi.h>
 
 #include <mqttConfig.h>
 
 /******************************** mqtt ***************************************
-  converted these to libraries so code can be uploaded to github
-  without privacy compromise
-#define mqtt_server "get from mqttConfig.h"
-#define mqtt_port 1883 // use 8883 for SSL
-#define mqtt_user "get from mqttConfig.h"
-#define mqtt_password "get from wifiConfigRasperryPi.h"
+Convert these to libraries so code can be uploaded to github without privacy compromise
+        #define mqtt_server "get from mqttConfig.h"
+        #define mqtt_port 1883 // use 8883 for SSL
+        #define mqtt_user "get from mqttConfig.h"
+        #define mqtt_password "get from mqttConfig.h"
 ******************************************************************************/
 
 //int analog input
@@ -75,7 +74,7 @@ readBatteryatA0 batteryTest; //instantiate readBatteryatA0
 
 /*************************dht setup**************************
  * DHT22 sensor setup for WEMOS D1 Mini
- * single channel for now
+ *
  * WEMOS pin mappings
  * WeMos D1 mini Pin Number   Arduino IDE Pin Number
  * D0                         16
@@ -88,6 +87,7 @@ readBatteryatA0 batteryTest; //instantiate readBatteryatA0
  * D8                         15
  * TX                          1
  * RX                          3
+ * 
  * https://chewett.co.uk/blog/1066/pin-numbering-for-wemos-d1-mini-esp8266/
  ***********************************************************/
 
@@ -97,11 +97,11 @@ DHT dht_02(12, DHT22); //channel 02 WEMOS board see pin mapping above
 DHT dht_03(13, DHT22); //channel 03 WEMOS board see pin mapping above
 /**********sensors WEMOS**********/
 
-/**********sensors HUZZAH**********/
+/**********sensors HUZZAH**********
 DHT dht_01(4, DHT22); //channel 01 HUZZAH board
 DHT dht_02(2, DHT22); //channel 02 HUZZAH board
 //DHT dht_03(7, DHT22); //channel  HUZZAH board
-/**********sensors HUZZAH**********/
+**********sensors HUZZAH**********/
 
 /************************************************
 define feeds
@@ -121,7 +121,7 @@ PubSubClient mqttClient;
 void setup() {
   dht_01.begin(); //initialize DHT22 01
   dht_02.begin(); //initialize DHT22 02
-  //dht_03.begin(); //initialize DHT22 03
+  dht_03.begin(); //initialize DHT22 03
  //Serial.begin(115200);
   setup_wifi();
   mqttClient.setClient(wifiClient);
@@ -152,8 +152,8 @@ void setup() {
   dtostrf(dht_01.readHumidity(), 7, 3, humidityDHT01);
   dtostrf(dht_02.readTemperature(true), 7, 3, temperatureDHT02);
   dtostrf(dht_02.readHumidity(), 7, 3, humidityDHT02);
-//  dtostrf(dht_03.readTemperature(true), 7, 3, temperatureDHT03);
-//  dtostrf(dht_03.readHumidity(), 7, 3, humidityDHT03);
+  dtostrf(dht_03.readTemperature(true), 7, 3, temperatureDHT03);
+  dtostrf(dht_03.readHumidity(), 7, 3, humidityDHT03);
 
   mqttClient.publish(publishTopicSensorNumber, "Sensor0x", true);
   mqttClient.publish(publishTopicBatteryFeed, voltageAsString, true);
